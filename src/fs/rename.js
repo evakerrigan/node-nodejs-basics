@@ -1,8 +1,13 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import fs from "fs/promises";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const rename = async () => {
-  const sourceFilePath = "./files/wrongFilename.txt";
-  const newFilePath = "./files/properFilename.md";
+  const sourceFilePath = path.join(__dirname, "files/wrongFilename.txt");
+  const newFilePath =  path.join(__dirname, "files/properFilename.md");
 
   try {
     await fs.access(sourceFilePath);
