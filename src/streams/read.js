@@ -18,7 +18,7 @@ const read = async () => {
   });
 
   readStream.on("error", (error) => {
-    throw new Error("FS operation failed");
+    process.stdout.write('\nFS operation failed');
   });
 };
 
