@@ -18,6 +18,8 @@ const copy = async () => {
             `${filePathCopy}/${file}`
           );
         }
+      } else {
+        throw err;
       }
     }
   } catch (err) {
