@@ -1,33 +1,19 @@
-// import { parentPort, workerData, Worker } from 'worker_threads';
-
-// const nthFibonacci = (n) => n < 2 ? n : nthFibonacci(n - 1) + nthFibonacci(n - 2);
-
-// const sendResult = (data) => {
-//   const result = nthFibonacci(data);
-
-//   if (parentPort) {
-//     parentPort.postMessage(result);
-//   }
-
-//   const worker = new Worker("./worker.js", { workerData: 10 });
-
-//   worker.on("message", (result) => {
-//     console.log("Result:", result); // Результат будет выведен в консоль основного потока
-//   });
-// };
-
-// sendResult(workerData);
-
-import { parentPort, workerData } from 'worker_threads';
+import { parentPort, workerData } from "worker_threads";
 
 const nthFibonacci = (n) => n < 2 ? n : nthFibonacci(n - 1) + nthFibonacci(n - 2);
 
-const sendResult = (data) => {
-  const result = nthFibonacci(data);
+// const myNumber = (n) => (n < 2 ? 25 : n);
 
-  if (parentPort) {
-    parentPort.postMessage(result);
-  }
+const sendResult = (data) => {
+  console.log("workerData = ", workerData);
+
+  const result = nthFibonacci(data);
+  // const result = myNumber(data);
+  parentPort.postMessage(result);
 };
+
+parentPort.on("message", (data) => {
+  sendResult(data);
+});
 
 sendResult(workerData);
