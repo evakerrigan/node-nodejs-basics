@@ -1,4 +1,4 @@
-import { spawn } from 'child_process';
+import { spawn } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -8,29 +8,23 @@ const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, "files", "script.js");
 
 const spawnChildProcess = async (args) => {
-  const child = spawn('node', [filePath, ...args], {
-    stdio: ['pipe', 'pipe', process.stderr, 'ipc']
+  const child = spawn("node", [filePath, ...args], {
+    stdio: ["pipe", "pipe", process.stderr, "ipc"],
   });
 
-  // Перенаправляем входные данные главного процесса в дочерний процесс
   process.stdin.pipe(child.stdin);
 
-  // Перенаправляем вывод данных дочернего процесса в главный процесс
-  child.stdout.pipe(process.stdout);
+  child.stdout.on("data", (data) => {
+    process.stdout.write(data);
+  });
 
-//   child.stdout.on('data', (data) => {
-//     process.stdout.write(data);
-//   });
-
-//   child.on('exit', (code, signal) => {
-//     console.log(`Child process exited with code ${code} and signal ${signal}`);
-//   });
-
-
-
+  child.on("exit", (code, signal) => {
+    process.stdout.write(
+      `Child process exited with code ${code} and signal ${signal}\n`
+    );
+  });
 };
 
-// Протестируйте функцию, передав в нее массив аргументов
-// spawnChildProcess(['argument1', 'argument2', 'argument3']);
+spawnChildProcess(["Beautiful", "day!"]);
 
-spawnChildProcess([5, 8, 1]);
+export default spawnChildProcess;
